@@ -90,11 +90,19 @@ public class CountHours extends DefaultHandler {
             // Create a schema factory that supports the desired schema language:
             SchemaFactory schemaFactory =
                     SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+
+            // Load the schema from the project root where COML.xsd resides.
             Schema schema = schemaFactory.newSchema(new File("../COML.xsd"));
 
-            // Create parser and turn on desired features.
+            // Create a parser and turn on desired features.
             SAXParserFactory factory = SAXParserFactory.newInstance();
+
+            // XML Schema validation requires namespace awareness
+            factory.setNamespaceAware(true);
             factory.setSchema(schema);
+
+            // The setValidating method implies DTD validation, which we aren't doing.
+            //factory.setValidating(true);
 
             // Create the parser.
             parser = factory.newSAXParser();
